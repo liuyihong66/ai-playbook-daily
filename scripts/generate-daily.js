@@ -323,7 +323,33 @@ function escapeHtml(value = "") {
 }
 
 function starLabel(repo) {
-  return repo.starsToday > 0 ? `+${repo.starsToday.toLocaleString("en-US")} 今日新增` : "未取到 24h 星数";
+  return repo.starsToday > 0 ? `+${repo.starsToday.toLocaleString("en-US")} 今日新增` : "24h 新增未公开";
+}
+
+function categoryLabel(category = "AI") {
+  const labels = {
+    "AI Coding": "AI 编程/开发工具",
+    Agent: "Agent / 自动化",
+    Knowledge: "知识库 / 检索",
+    Media: "图片/视频/语音",
+    Creative: "创意生产工具",
+    Presentation: "PPT / 演示文稿",
+    Productivity: "效率工具",
+    AI: "AI 工具"
+  };
+  return labels[category] || category;
+}
+
+function oneLineUnderstanding(repo) {
+  const category = repo.category || "AI";
+  if (category === "Presentation") return "把文档、资料或想法转换成可编辑的演示文稿，适合办公交付场景。";
+  if (category === "Media") return "围绕图片、视频、语音或多模态内容生产，帮助用户更快完成创作。";
+  if (category === "Creative") return "面向创作、设计或内容生产，把 AI 能力包装成更容易上手的工具。";
+  if (category === "Productivity") return "把 AI 放进办公、笔记、文档或日常流程，减少重复劳动。";
+  if (category === "AI Coding") return "面向开发者的 AI 工具，重点是让 AI 更稳定地参与真实开发流程。";
+  if (category === "Agent") return "把 AI 从单次问答升级成可以连续执行任务的 Agent 或工作流。";
+  if (category === "Knowledge") return "帮助 AI 更好地理解、检索和使用资料，让回答更依赖上下文。";
+  return "一个值得观察的 AI 项目，重点看它替用户省掉了哪一步。";
 }
 
 function renderRepoList(repos) {
@@ -331,16 +357,16 @@ function renderRepoList(repos) {
         <article class="repo-item">
           <div class="repo-main">
             <span class="rank">${index + 1}</span>
-            <div class="repo-title"><a href="${repo.url}" target="_blank" rel="noreferrer">${escapeHtml(repo.name)}</a><span class="tag">${escapeHtml(repo.category)}</span></div>
-            <div class="repo-metrics"><span>${starLabel(repo)}</span><span>${repo.starsTotal.toLocaleString("en-US")} 总 Stars</span></div>
+            <div class="repo-title"><a href="${repo.url}" target="_blank" rel="noreferrer">${escapeHtml(repo.name)}</a><span class="tag">${escapeHtml(categoryLabel(repo.category))}</span></div>
+            <div class="repo-metrics"><span>${starLabel(repo)}</span><span>${repo.starsTotal.toLocaleString("en-US")} 总星数</span></div>
           </div>
           <details>
-            <summary>展开：它做什么 / AI 玩法 / 产品启发</summary>
+            <summary>展开详细解读</summary>
             <div class="detail-grid">
-              <p><strong>它是做什么的：</strong>${escapeHtml(repo.summary)}</p>
-              <p><strong>解决什么问题：</strong>${escapeHtml(projectProblem(repo))}</p>
-              <p><strong>AI 玩法：</strong>${escapeHtml(projectPlay(repo))}</p>
+              <p><strong>一句话理解：</strong>${escapeHtml(oneLineUnderstanding(repo))}</p>
+              <p><strong>具体玩法：</strong>${escapeHtml(projectPlay(repo))}</p>
               <p><strong>产品启发：</strong>${escapeHtml(productInspiration(repo))}</p>
+              <p class="raw-note"><strong>GitHub 原始说明：</strong>${escapeHtml(repo.summary)}</p>
             </div>
           </details>
         </article>`).join("")}</div>`;
@@ -365,16 +391,6 @@ function renderHtml(dataset, currentDate, isReport = false) {
   const nav = isReport
     ? `<a class="nav-link" href="../index.html">返回最新日报</a><a class="nav-link" href="../archive.html">查看历史归档</a><a class="nav-link" href="../data/${currentDate}.json">查看当天原始数据</a>`
     : `<a class="nav-link" href="./archive.html">查看历史归档</a><a class="nav-link" href="./data/${currentDate}.json">查看今日原始数据</a>`;
-  const projectCards = [...repos, ...playbooks.filter((repo) => !repos.some((item) => item.name === repo.name))].map((repo) => `
-          <article class="project-card">
-            <h3><a href="${repo.url}" target="_blank" rel="noreferrer">${escapeHtml(repo.name)}</a></h3>
-            <span class="tag">${escapeHtml(repo.category)}</span>
-            <p><strong>它是做什么的：</strong>${escapeHtml(repo.summary)}</p>
-            <p><strong>解决什么问题：</strong>${escapeHtml(projectProblem(repo))}</p>
-            <p><strong>AI 玩法：</strong>${escapeHtml(projectPlay(repo))}</p>
-            <p><strong>产品启发：</strong>${escapeHtml(productInspiration(repo))}</p>
-          </article>`).join("");
-
   return `<!doctype html>
 <html lang="zh-CN">
   <head>
@@ -384,7 +400,7 @@ function renderHtml(dataset, currentDate, isReport = false) {
     <title>AI 产品灵感日报</title>
     <style>
       :root { --bg:#f7f7f4; --paper:#fff; --ink:#18221d; --muted:#65716b; --line:#dfe4df; --green:#0f7a55; --green-soft:#e8f4ee; --amber-soft:#fff3df; }
-      *{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--ink);font-family:"Segoe UI","Microsoft YaHei",Arial,sans-serif;line-height:1.65}.page{width:min(1080px,calc(100% - 32px));margin:0 auto;padding:28px 0 56px}header{padding:28px 0 22px;border-bottom:3px solid var(--ink)}.eyebrow{color:var(--green);font-size:13px;font-weight:800;letter-spacing:.08em;text-transform:uppercase}h1{margin:8px 0 10px;font-size:42px;line-height:1.15}.intro{max-width:860px;margin:0;color:var(--muted);font-size:17px}.meta,.top-nav{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}.top-nav{margin-top:14px}.pill,.nav-link{display:inline-flex;align-items:center;border:1px solid var(--line);background:var(--paper);border-radius:999px;padding:7px 11px;color:var(--muted);font-size:13px;font-weight:700}.nav-link{color:var(--green)}main{display:grid;gap:34px;margin-top:28px}section{background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:22px}.plain-section{background:transparent;border:0;border-radius:0;padding:0}.section-head{display:flex;justify-content:space-between;align-items:end;gap:16px;margin-bottom:16px}h2{margin:0;font-size:26px}.note{margin:0;max-width:44ch;color:var(--muted);text-align:right}.rank{width:34px;color:var(--green);font-weight:800}a{color:var(--green);font-weight:800;text-decoration:none}a:hover{text-decoration:underline}.tag{display:inline-flex;border-radius:999px;padding:4px 8px;background:var(--green-soft);color:var(--green);font-size:12px;font-weight:800}.repo-list{display:grid;gap:12px}.repo-item{border:1px solid var(--line);border-radius:10px;background:#fffdf9;padding:14px 16px}.repo-main{display:grid;grid-template-columns:34px minmax(0,1fr) auto;gap:12px;align-items:center}.repo-title{display:flex;flex-wrap:wrap;gap:8px;align-items:center}.repo-metrics{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end;color:var(--muted);font-size:13px;font-weight:700}.repo-metrics span{border:1px solid var(--line);border-radius:999px;padding:5px 8px;background:var(--paper)}details{margin-top:10px;border-top:1px solid var(--line);padding-top:10px}summary{cursor:pointer;color:var(--green);font-weight:800}.detail-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 18px;margin-top:8px}.detail-grid p{margin:0;color:var(--muted)}.signals{display:grid;gap:12px;margin:0;padding:0;list-style:none}.signals li{border-left:4px solid var(--green);background:var(--paper);border-radius:6px;padding:14px 16px}.signals strong{display:block;margin-bottom:4px}.project-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.project-card{border:1px solid var(--line);border-radius:8px;padding:16px;background:var(--paper)}.project-card h3{margin:0 0 8px;font-size:18px}.project-card p{margin:8px 0;color:var(--muted)}.callout{background:var(--amber-soft);border-color:#f1d7aa}@media(max-width:780px){.section-head{align-items:start;flex-direction:column}.note{text-align:left}.repo-main{grid-template-columns:28px 1fr}.repo-metrics{grid-column:2;justify-content:flex-start}.detail-grid,.project-grid{grid-template-columns:1fr}}
+      *{box-sizing:border-box} body{margin:0;background:linear-gradient(180deg,#faf7f1 0%,#f4efe7 100%);color:var(--ink);font-family:"Segoe UI","Microsoft YaHei",Arial,sans-serif;line-height:1.65}.page{width:min(1040px,calc(100% - 36px));margin:0 auto;padding:34px 0 64px}header{padding:30px 0 24px;border-bottom:2px solid var(--ink)}.eyebrow{color:var(--green);font-size:12px;font-weight:900;letter-spacing:.12em;text-transform:uppercase}h1{margin:8px 0 12px;font-size:42px;line-height:1.12}.intro{max-width:820px;margin:0;color:var(--muted);font-size:17px}.meta,.top-nav{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}.top-nav{margin-top:14px}.pill,.nav-link{display:inline-flex;align-items:center;border:1px solid var(--line);background:rgba(255,255,255,.72);border-radius:999px;padding:7px 11px;color:var(--muted);font-size:13px;font-weight:700}.nav-link{color:var(--green)}main{display:grid;gap:28px;margin-top:28px}section{background:rgba(255,255,255,.86);border:1px solid var(--line);border-radius:16px;padding:24px;box-shadow:0 10px 28px rgba(49,40,27,.06)}.plain-section{background:transparent;border:0;box-shadow:none;border-radius:0;padding:0}.section-head{display:flex;justify-content:space-between;align-items:end;gap:16px;margin-bottom:18px}h2{margin:0;font-size:25px;letter-spacing:-.02em}.note{margin:0;max-width:42ch;color:var(--muted);text-align:right}.rank{display:grid;place-items:center;width:32px;height:32px;border-radius:50%;background:var(--green-soft);color:var(--green);font-weight:900}a{color:var(--green);font-weight:850;text-decoration:none}a:hover{text-decoration:underline}.tag{display:inline-flex;border-radius:999px;padding:4px 8px;background:var(--green-soft);color:var(--green);font-size:12px;font-weight:800}.repo-list{display:grid;gap:12px}.repo-item{border:1px solid var(--line);border-radius:14px;background:#fffdf9;padding:16px}.repo-main{display:grid;grid-template-columns:38px minmax(0,1fr) auto;gap:14px;align-items:center}.repo-title{display:flex;flex-wrap:wrap;gap:8px;align-items:center}.repo-metrics{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end;color:var(--muted);font-size:13px;font-weight:700}.repo-metrics span{border:1px solid var(--line);border-radius:999px;padding:5px 9px;background:var(--paper)}details{margin-top:12px;border-top:1px solid var(--line);padding-top:12px}summary{cursor:pointer;color:var(--green);font-weight:800}summary::marker{color:var(--green)}.detail-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:12px}.detail-grid p{margin:0;color:var(--muted);background:#fbfaf6;border:1px solid var(--line);border-radius:10px;padding:12px}.detail-grid .raw-note{grid-column:1/-1;font-size:13px;color:#7a837d}.signals{display:grid;gap:12px;margin:0;padding:0;list-style:none}.signals li{border-left:4px solid var(--green);background:#fffdf9;border-radius:10px;padding:14px 16px}.signals strong{display:block;margin-bottom:4px}.callout{background:var(--amber-soft);border-color:#f1d7aa}@media(max-width:860px){.section-head{align-items:start;flex-direction:column}.note{text-align:left}.repo-main{grid-template-columns:34px 1fr}.repo-metrics{grid-column:2;justify-content:flex-start}.detail-grid{grid-template-columns:1fr}}
     </style>
   </head>
   <body>
@@ -392,7 +408,7 @@ function renderHtml(dataset, currentDate, isReport = false) {
       <header>
         <div class="eyebrow">AI Product Radar</div>
         <h1>AI 产品灵感日报</h1>
-        <p class="intro">帮你从 GitHub 上的 AI 项目里提炼产品灵感。每天固定 10 条，重点回答：大神们在用 AI 解决什么问题，具体怎么玩，以及这些项目能给 AI 产品设计带来什么启发。</p>
+        <p class="intro">帮你从 GitHub 上的 AI 项目里提炼产品灵感。每天两张榜各 10 条，重点回答：大神们在用 AI 解决什么问题，具体怎么玩，以及这些项目能给 AI 产品设计带来什么启发。</p>
         <div class="meta"><span class="pill">更新时间：${dataset.meta.lastUpdated}</span><span class="pill">主题：AI 产品灵感</span><span class="pill">AI 项目：${repos.length} 条</span><span class="pill">应用玩法：${playbooks.length} 条</span></div>
         <nav class="top-nav" aria-label="页面导航">${nav}</nav>
       </header>
@@ -401,7 +417,6 @@ function renderHtml(dataset, currentDate, isReport = false) {
         <section><div class="section-head"><h2>24 小时星数最高的 AI 项目</h2><p class="note">偏技术、工具、Agent、工作流和基础能力，帮你看 GitHub 大神们在搭什么。</p></div>${renderRepoList(repos)}</section>
         <section><div class="section-head"><h2>24 小时星数最高的实际应用玩法</h2><p class="note">偏图片、视频、PPT、设计、内容生产、办公工具和可直接上手的 AI 用法。</p></div>${renderRepoList(playbooks)}</section>
         <section class="plain-section"><div class="section-head"><h2>今天的产品信号</h2><p class="note">产品经理视角的结论，不需要逐个仓库深挖也能看懂趋势。</p></div><ul class="signals">${dataset.signals.map((signal) => `<li><strong>${escapeHtml(signal.title)}</strong>${escapeHtml(signal.description)}</li>`).join("")}</ul></section>
-        <section><div class="section-head"><h2>项目详情与产品启发</h2><p class="note">合并两张榜单并去重，先看它是做什么的，再看解决的问题、AI 用法和可借鉴点。</p></div><div class="project-grid">${projectCards}</div></section>
       </main>
     </div>
   </body>
@@ -463,7 +478,7 @@ function writeArchiveIndexAndPage(defaultDate) {
       return {
         value: date,
         weekday: dayLabel(date),
-        count: data.fastestGrowth?.length || 0,
+        count: (data.aiProjects?.length || data.fastestGrowth?.length || 0) + (data.applicationPlaybooks?.length || 0),
         summary: data.overview?.themeNote || data.overview?.theme || "AI 产品灵感日报"
       };
     });
