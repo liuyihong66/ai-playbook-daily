@@ -21,7 +21,7 @@ const APPLICATION = [
   "presentation", "office", "document", "docs", "pdf", "excel", "content",
   "creator", "creative", "poster", "avatar", "animation", "shorts", "edit",
   "editor", "studio", "canvas", "writing", "copywriting", "marketing", "social",
-  "website", "landing page", "chatbot", "assistant", "email", "generator",
+  "website", "landing page", "chatbot", "email", "generator",
   "generate", "caption", "subtitle", "transcription", "template", "mockup",
   "thumbnail", "meme", "story", "resume", "meeting"
 ];
@@ -130,10 +130,11 @@ function isTechnicalAiProject(repo) {
 
 function isApplicationPlaybook(repo) {
   const text = `${repo.name} ${repo.summary}`.toLowerCase();
+  const appishCategories = new Set(["Media", "Creative", "Presentation", "Productivity"]);
   const hasAi = CORE_AI.some((keyword) => hasKeyword(text, keyword));
   const hasApplication = APPLICATION.some((keyword) => hasKeyword(text, keyword));
   const bad = NEGATIVE.some((keyword) => hasKeyword(text, keyword));
-  return hasAi && hasApplication && !bad;
+  return hasAi && hasApplication && appishCategories.has(categoryFor(repo)) && !bad;
 }
 
 function explain(repo) {

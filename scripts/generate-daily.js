@@ -24,7 +24,7 @@ const APPLICATION_KEYWORDS = [
   "presentation", "office", "document", "docs", "pdf", "excel", "content",
   "creator", "creative", "poster", "avatar", "animation", "shorts", "edit",
   "editor", "studio", "canvas", "writing", "copywriting", "marketing", "social",
-  "website", "landing page", "chatbot", "assistant", "notion", "email",
+  "website", "landing page", "chatbot", "notion", "email",
   "generator", "generate", "caption", "subtitle", "transcription", "template",
   "mockup", "thumbnail", "meme", "story", "resume", "meeting"
 ];
@@ -241,10 +241,11 @@ function isStrictAiApplication(repo) {
 
 function isActualApplicationPlay(repo) {
   const text = `${repo.name} ${repo.description} ${(repo.topics || []).join(" ")}`.toLowerCase();
+  const appishCategories = new Set(["Media", "Creative", "Presentation", "Productivity"]);
   const hasAiSignal = CORE_AI_KEYWORDS.some((keyword) => hasKeyword(text, keyword));
   const hasApplicationSignal = APPLICATION_KEYWORDS.some((keyword) => hasKeyword(text, keyword));
   const looksLikePureList = NEGATIVE_KEYWORDS.some((keyword) => hasKeyword(text, keyword));
-  return hasAiSignal && hasApplicationSignal && !looksLikePureList && scoreRepo(repo) >= 5;
+  return hasAiSignal && hasApplicationSignal && appishCategories.has(categoryFor(repo)) && !looksLikePureList && scoreRepo(repo) >= 5;
 }
 
 function isTechnicalAiProject(repo) {
