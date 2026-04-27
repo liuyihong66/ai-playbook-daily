@@ -1,0 +1,50 @@
+window.__TRENDING_BOOTSTRAP__ = {
+  index: {
+    defaultDate: "2026-04-27",
+    categories: ["All", "AI", "Infra", "Productivity", "Media", "Learning"],
+    dates: [{ value: "2026-04-27", label: "2026-04-27 周一" }]
+  },
+  datasets: {
+    "2026-04-27": {
+      meta: {
+        lastUpdated: "2026-04-27 08:00",
+        nextUpdate: "每天 08:00"
+      },
+      overview: {
+        observedDate: "04/27",
+        theme: "AI 实际应用",
+        themeNote: "今天最明显的变化是：大家开始把 AI 从聊天框，推进到工作流、桌面操作、代码图谱、视频生成、学习助手和长期记忆这些更具体的应用里。",
+        scope: "今天固定整理 10 条，更强调实际用途和玩法，而不是泛技术热榜。",
+        note: "如果你时间不多，先看 24 小时增长榜前 3，再看总星榜前 3，基本就能把握今天的 AI 风向。"
+      },
+      spotlight: [
+        { title: "AI 工作流技能化", description: "不少项目都在把 AI 的使用方式做成现成技能和模板，让 AI 不只是回答问题，而是按流程执行任务。" },
+        { title: "AI 真正开始操作电脑", description: "桌面自动化和 Computer Use 相关项目持续升温，说明 AI 正在从会说走向会做。" },
+        { title: "AI 应用开始嵌进具体产品场景", description: "视频生成、PPT 生成、学习助手、代码理解、知识库管理等方向都在把 AI 变成具体产品能力。" },
+        { title: "大神们的重点不再只是模型", description: "越来越多值得看的项目，核心竞争点不是模型参数，而是 workflow、记忆、上下文和交互体验。" }
+      ],
+      fastestGrowth: [
+        { rank: 1, name: "forrestchang/andrej-karpathy-skills", url: "https://github.com/forrestchang/andrej-karpathy-skills", starsToday: 4369, starsTotal: 4369, forks: 497, category: "AI", summary: "把 Claude Code 调教方式沉淀成单文件技能模板。", beginnerGuide: "你可以把它理解成别人整理好的 AI 编码使用心得。它更像一种高质量工作流模板，帮助 AI 写代码时少犯低级错误。", whyItMatters: "这说明现在很多大神关注的重点，是怎么把自己对 AI 的使用经验封装成可复制的方法论。" },
+        { rank: 2, name: "NousResearch/hermes-agent", url: "https://github.com/NousResearch/hermes-agent", starsToday: 2366, starsTotal: 2366, forks: 478, category: "AI", summary: "一个主打可成长性的 AI Agent 项目。", beginnerGuide: "简单理解，它想做的是让 AI 像一个会不断变强的助手，而不是一次性回答器。", whyItMatters: "AI Agent 最吸引人的方向之一，就是不再把 AI 当工具，而是当一个持续协作的数字同事。" },
+        { rank: 3, name: "Alishahryar1/free-claude-code", url: "https://github.com/Alishahryar1/free-claude-code", starsToday: 2126, starsTotal: 2126, forks: 259, category: "AI", summary: "低成本把 Claude Code 接入终端、VS Code 和 Discord。", beginnerGuide: "它更像一个怎么让 AI 真正开始帮你干活的上手入口，重点是落地和接入。", whyItMatters: "很多 AI 新玩法真正爆发的前提，是先把使用门槛降下来。" },
+        { rank: 4, name: "mattpocock/skills", url: "https://github.com/mattpocock/skills", starsToday: 1976, starsTotal: 1976, forks: 137, category: "AI", summary: "把常见 AI 编码流程做成可复用技能目录。", beginnerGuide: "你可以把它理解成 AI 工作流的积木。很多重复工作都能被做成模板，后面只要反复复用。", whyItMatters: "这类项目很能代表接下来一年 AI 应用的趋势：不是比谁更会聊天，而是比谁的流程设计更成熟。" },
+        { rank: 5, name: "refactoringhq/tolaria", url: "https://github.com/refactoringhq/tolaria", starsToday: 1169, starsTotal: 1169, forks: 77, category: "Productivity", summary: "管理 Markdown 知识库的桌面应用。", beginnerGuide: "它很像 AI 时代知识库产品会长成的样子：更强调信息整理、结构化和长期积累。", whyItMatters: "AI 要想真的帮人工作，背后一定需要更好的知识组织方式。" },
+        { rank: 6, name: "JuliusBrussee/caveman", url: "https://github.com/JuliusBrussee/caveman", starsToday: 1029, starsTotal: 1029, forks: 65, category: "AI", summary: "通过极简提示风格帮 Claude Code 省 token 的技能。", beginnerGuide: "你可以把它理解成一种让 AI 说话更短、更省钱的小技巧工具。", whyItMatters: "现在很多优秀玩法未必复杂，反而是把一个高频痛点打磨得非常好。" },
+        { rank: 7, name: "safishamsi/graphify", url: "https://github.com/safishamsi/graphify", starsToday: 789, starsTotal: 789, forks: 88, category: "Infra", summary: "把代码、文档、论文、图片都转成可查询知识图谱。", beginnerGuide: "这不是普通搜索，而是把内容整理成可以被 AI 查询和推理的图谱。", whyItMatters: "这类玩法说明 AI 的下一步不是单纯生成，而是先更聪明地理解上下文。" },
+        { rank: 8, name: "multica-ai/multica", url: "https://github.com/multica-ai/multica", starsToday: 633, starsTotal: 633, forks: 75, category: "AI", summary: "把多个 coding agents 变成真正团队成员的管理平台。", beginnerGuide: "你可以把它理解成 AI 员工协作面板，像分配任务给同事一样给 agent 指派问题、跟踪进度。", whyItMatters: "这已经不是单点工具玩法，而是在探索 AI 团队协作产品。" },
+        { rank: 9, name: "hugohe3/ppt-master", url: "https://github.com/hugohe3/ppt-master", starsToday: 323, starsTotal: 323, forks: 32, category: "Productivity", summary: "把文档直接生成可编辑 PPTX 的 AI 工具。", beginnerGuide: "把一份文档直接变成可编辑幻灯片，而且不是图片，而是真 PPT 元素。", whyItMatters: "这类项目直接解决工作里很烦但经常做的任务，很能体现 AI 落地价值。" },
+        { rank: 10, name: "AIDC-AI/Pixelle-Video", url: "https://github.com/AIDC-AI/Pixelle-Video", starsToday: 341, starsTotal: 341, forks: 44, category: "Media", summary: "AI 全自动短视频引擎。", beginnerGuide: "你可以把它看成 AI 帮你直接出短视频的自动化系统。", whyItMatters: "AI 视频不是新概念，真正有意思的是自动化流水线开始出来了。" }
+      ],
+      favorites: [
+        { name: "mattpocock/skills", url: "https://github.com/mattpocock/skills", category: "AI", reason: "工作流模板", summary: "适合长期看 AI 编码工作流怎么被做成标准模块。" },
+        { name: "multica-ai/multica", url: "https://github.com/multica-ai/multica", category: "AI", reason: "Agent 协作", summary: "适合长期看 AI 团队协作产品会不会成为新方向。" },
+        { name: "AIDC-AI/Pixelle-Video", url: "https://github.com/AIDC-AI/Pixelle-Video", category: "Media", reason: "AI 内容生成", summary: "适合长期看 AI 视频自动化会不会继续爆发。" }
+      ],
+      signals: [
+        { title: "AI 最有价值的新玩法，越来越像工作流产品", description: "今天最热的项目里，有很多都不是在做一个大而全模型，而是在把 AI 包进具体工作步骤里，比如编码、知识整理、PPT、视频和桌面执行。" },
+        { title: "大神们在拼的是系统设计能力", description: "从 skills 到 multica，再到 graphify，可以看到玩法已经升级成：如何组织上下文、如何安排 agent、如何让 AI 和已有系统配合。" },
+        { title: "真正落地的 AI 项目，通常都能回答它替你省了哪一步", description: "不管是 PPT、视频、知识库还是 coding agent，这些项目最值得看的地方是：它具体替用户省掉了哪一段麻烦流程。" }
+      ]
+    }
+  }
+};

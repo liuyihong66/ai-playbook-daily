@@ -1,0 +1,91 @@
+{
+  "meta": {
+    "lastUpdated": "2026-04-26 08:00",
+    "nextUpdate": "每天 08:00"
+  },
+  "overview": {
+    "observedDate": "04/26",
+    "theme": "AI 工具接入",
+    "themeNote": "昨天更偏向一个问题：怎么把 AI 更便宜、更顺手地接到自己的工作环境里。",
+    "scope": "这份样例用来帮助你回看昨天和今天的风向变化。",
+    "note": "如果你想看趋势变化，最有价值的是对比不同日期的主线。"
+  },
+  "spotlight": [
+    {
+      "title": "先用起来，再谈复杂能力",
+      "description": "低门槛接入和真实上手路径，依然是 AI 工具传播的关键。"
+    },
+    {
+      "title": "个人 AI 助手还是热门话题",
+      "description": "大家仍然希望 AI 最终能成为一个长期工作伙伴。"
+    },
+    {
+      "title": "学习型项目继续稳定吸流",
+      "description": "说明很多人还在补基础，希望真正理解 AI 和工程结合后的玩法。"
+    }
+  ],
+  "fastestGrowth": [
+    {
+      "rank": 1,
+      "name": "Alishahryar1/free-claude-code",
+      "url": "https://github.com/Alishahryar1/free-claude-code",
+      "starsToday": 1460,
+      "starsTotal": 12328,
+      "forks": 1744,
+      "category": "AI",
+      "summary": "帮助更多人低门槛接入 AI 编码工具。",
+      "beginnerGuide": "更像一个上手入口：告诉你怎样把 AI 编码工具接进终端和编辑器，尽快开始实战。",
+      "whyItMatters": "很多新玩法之所以能爆，不是因为原理新，而是因为有人把使用门槛降下来了。"
+    },
+    {
+      "rank": 2,
+      "name": "openclaw/openclaw",
+      "url": "https://github.com/openclaw/openclaw",
+      "starsToday": 812,
+      "starsTotal": 364136,
+      "forks": 74581,
+      "category": "AI",
+      "summary": "跨平台个人 AI 助手方向项目。",
+      "beginnerGuide": "它代表一种长期愿景：把 AI 做成真正长期可用的工作助手，而不是一次性问答工具。",
+      "whyItMatters": "个人 AI 助手这条线还在持续升温，说明它远没有结束。"
+    },
+    {
+      "rank": 3,
+      "name": "mattpocock/skills",
+      "url": "https://github.com/mattpocock/skills",
+      "starsToday": 540,
+      "starsTotal": 21975,
+      "forks": 1708,
+      "category": "AI",
+      "summary": "把 AI 编码流程做成可复用技能。",
+      "beginnerGuide": "你可以把它看成一种非常新的模板思路：不是模板代码，而是模板化的 AI 工作过程。",
+      "whyItMatters": "这是后面 AI 工作流技能化继续升温的前置信号。"
+    }
+  ],
+  "favorites": [
+    {
+      "name": "openclaw/openclaw",
+      "url": "https://github.com/openclaw/openclaw",
+      "category": "AI",
+      "reason": "个人助手",
+      "summary": "适合看 AI 助手未来会不会从概念走到稳定产品。"
+    },
+    {
+      "name": "mattpocock/skills",
+      "url": "https://github.com/mattpocock/skills",
+      "category": "AI",
+      "reason": "工作流模板",
+      "summary": "适合长期观察 AI 编码工作流模板化的趋势。"
+    }
+  ],
+  "signals": [
+    {
+      "title": "AI 工具普及期还在继续",
+      "description": "昨天最明显的信号，是大家依然在寻找更低门槛、更低成本的 AI 实战路径。"
+    },
+    {
+      "title": "个人助手叙事还没有降温",
+      "description": "很多项目都在尝试把 AI 从一次性交互升级成长期陪伴式工具。"
+    }
+  ]
+}

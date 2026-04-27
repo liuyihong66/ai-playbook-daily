@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="Cache-Control" content="no-store" />
+    <title>AI 产品灵感日报</title>
+    <style>
+      :root { --bg:#f7f7f4; --paper:#fff; --ink:#18221d; --muted:#65716b; --line:#dfe4df; --green:#0f7a55; --green-soft:#e8f4ee; --amber-soft:#fff3df; }
+      *{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--ink);font-family:"Segoe UI","Microsoft YaHei",Arial,sans-serif;line-height:1.65}.page{width:min(1080px,calc(100% - 32px));margin:0 auto;padding:28px 0 56px}header{padding:28px 0 22px;border-bottom:3px solid var(--ink)}.eyebrow{color:var(--green);font-size:13px;font-weight:800;letter-spacing:.08em;text-transform:uppercase}h1{margin:8px 0 10px;font-size:42px;line-height:1.15}.intro{max-width:860px;margin:0;color:var(--muted);font-size:17px}.meta,.top-nav{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}.top-nav{margin-top:14px}.pill,.nav-link{display:inline-flex;align-items:center;border:1px solid var(--line);background:var(--paper);border-radius:999px;padding:7px 11px;color:var(--muted);font-size:13px;font-weight:700}.nav-link{color:var(--green)}main{display:grid;gap:34px;margin-top:28px}section{background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:22px}.plain-section{background:transparent;border:0;border-radius:0;padding:0}.section-head{display:flex;justify-content:space-between;align-items:end;gap:16px;margin-bottom:16px}h2{margin:0;font-size:26px}.note{margin:0;max-width:44ch;color:var(--muted);text-align:right}table{width:100%;border-collapse:collapse}th,td{padding:12px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}th{color:var(--muted);font-size:13px;white-space:nowrap}tr:last-child td{border-bottom:0}.rank{width:44px;color:var(--green);font-weight:800}a{color:var(--green);font-weight:800;text-decoration:none}a:hover{text-decoration:underline}.metric{white-space:nowrap;font-weight:800}.summary{color:var(--muted)}.tag{display:inline-flex;border-radius:999px;padding:4px 8px;background:var(--green-soft);color:var(--green);font-size:12px;font-weight:800}.signals{display:grid;gap:12px;margin:0;padding:0;list-style:none}.signals li{border-left:4px solid var(--green);background:var(--paper);border-radius:6px;padding:14px 16px}.signals strong{display:block;margin-bottom:4px}.project-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.project-card{border:1px solid var(--line);border-radius:8px;padding:16px;background:var(--paper)}.project-card h3{margin:0 0 8px;font-size:18px}.project-card p{margin:8px 0;color:var(--muted)}.callout{background:var(--amber-soft);border-color:#f1d7aa}@media(max-width:780px){.section-head{align-items:start;flex-direction:column}.note{text-align:left}.table-wrap{overflow-x:auto}table{min-width:860px}.project-grid{grid-template-columns:1fr}}
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <header>
+        <div class="eyebrow">AI Product Radar</div>
+        <h1>AI 产品灵感日报</h1>
+        <p class="intro">帮你从 GitHub 上的 AI 项目里提炼产品灵感。每天固定 10 条，重点回答：大神们在用 AI 解决什么问题，具体怎么玩，以及这些项目能给 AI 产品设计带来什么启发。</p>
+        <div class="meta"><span class="pill">更新时间：2026-04-27 08:00</span><span class="pill">主题：AI 产品灵感</span><span class="pill">数量：10 条</span><span class="pill">口径：24h 增长 + 严格 AI 应用筛选</span></div>
+        <nav class="top-nav" aria-label="页面导航"><a class="nav-link" href="../index.html">返回最新日报</a><a class="nav-link" href="../archive.html">查看历史归档</a><a class="nav-link" href="../data/2026-04-27.json">查看当天原始数据</a></nav>
+      </header>
+      <main>
+        <section class="callout"><div class="section-head"><h2>今天先看什么</h2><p class="note">如果时间不多，先看增长榜前 3，再看总星榜前 3。</p></div><p>今天最明显的变化是：大家开始把 AI 从聊天框，推进到工作流、桌面操作、代码图谱、视频生成、学习助手和长期记忆这些更具体的应用里。</p></section>
+        <section><div class="section-head"><h2>24 小时增长最快</h2><p class="note">只保留和 AI 实际应用、Agent、工作流、内容生产、开发者工具有关的项目。</p></div><div class="table-wrap"><table><thead><tr><th>#</th><th>项目</th><th>今日新增</th><th>分类</th><th>它是做什么的</th><th>产品启发</th></tr></thead><tbody>
+          <tr>
+            <td class="rank">1</td>
+            <td><a href="https://github.com/forrestchang/andrej-karpathy-skills" target="_blank" rel="noreferrer">forrestchang/andrej-karpathy-skills</a></td>
+            <td class="metric">+4,369</td>
+            <td><span class="tag">AI</span></td>
+            <td class="summary">把 Claude Code 调教方式沉淀成单文件技能模板。</td>
+            <td class="summary">这说明现在很多大神关注的重点，是怎么把自己对 AI 的使用经验封装成可复制的方法论。</td>
+          </tr>
+          <tr>
+            <td class="rank">2</td>
+            <td><a href="https://github.com/NousResearch/hermes-agent" target="_blank" rel="noreferrer">NousResearch/hermes-agent</a></td>
+            <td class="metric">+2,366</td>
+            <td><span class="tag">AI</span></td>
+            <td class="summary">一个主打可成长性的 AI Agent 项目。</td>
+            <td class="summary">AI Agent 最吸引人的方向之一，就是不再把 AI 当工具，而是当一个持续协作的数字同事。</td>
+          </tr>
+          <tr>
+            <td class="rank">3</td>
+            <td><a href="https://github.com/Alishahryar1/free-claude-code" target="_blank" rel="noreferrer">Alishahryar1/free-claude-code</a></td>
+            <td class="metric">+2,126</td>
+            <td><span class="tag">AI</span></td>
+            <td class="summary">低成本把 Claude Code 接入终端、VS Code 和 Discord。</td>
+            <td class="summary">很多 AI 新玩法真正爆发的前提，是先把使用门槛降下来。</td>
+          </tr>
+          <tr>
+            <td class="rank">4</td>
+            <td><a href="https://github.com/mattpocock/skills" target="_blank" rel="noreferrer">mattpocock/skills</a></td>
+            <td class="metric">+1,976</td>
+            <td><span class="tag">AI</span></td>
+            <td class="summary">把常见 AI 编码流程做成可复用技能目录。</td>
+            <td class="summary">这类项目很能代表接下来一年 AI 应用的趋势：不是比谁更会聊天，而是比谁的流程设计更成熟。</td>
+          </tr>
+          <tr>
+            <td class="rank">5</td>
+            <td><a href="https://github.com/refactoringhq/tolaria" target="_blank" rel="noreferrer">refactoringhq/tolaria</a></td>
+            <td class="metric">+1,169</td>
+            <td><span class="tag">Productivity</span></td>
+            <td class="summary">管理 Markdown 知识库的桌面应用。</td>
+            <td class="summary">AI 要想真的帮人工作，背后一定需要更好的知识组织方式。</td>
+          </tr>
+          <tr>
+            <td class="rank">6</td>
+            <td><a href="https://github.com/JuliusBrussee/caveman" target="_blank" rel="noreferrer">JuliusBrussee/caveman</a></td>
+            <td class="metric">+1,029</td>
+            <td><span class="tag">AI</span></td>
+            <td class="summary">通过极简提示风格帮 Claude Code 省 token 的技能。</td>
+            <td class="summary">现在很多优秀玩法未必复杂，反而是把一个高频痛点打磨得非常好。</td>
+          </tr>
+          <tr>
+            <td class="rank">7</td>
+            <td><a href="https://github.com/safishamsi/graphify" target="_blank" rel="noreferrer">safishamsi/graphify</a></td>
+            <td class="metric">+789</td>
+            <td><span class="tag">Infra</span></td>
+            <td class="summary">把代码、文档、论文、图片都转成可查询知识图谱。</td>
+            <td class="summary">这类玩法说明 AI 的下一步不是单纯生成，而是先更聪明地理解上下文。</td>
+          </tr>
+          <tr>
+            <td class="rank">8</td>
+            <td><a href="https://github.com/multica-ai/multica" target="_blank" rel="noreferrer">multica-ai/multica</a></td>
+            <td class="metric">+633</td>
+            <td><span class="tag">AI</span></td>
+            <td class="summary">把多个 coding agents 变成真正团队成员的管理平台。</td>
+            <td class="summary">这已经不是单点工具玩法，而是在探索 AI 团队协作产品。</td>
+          </tr>
+          <tr>
+            <td class="rank">9</td>
+            <td><a href="https://github.com/hugohe3/ppt-master" target="_blank" rel="noreferrer">hugohe3/ppt-master</a></td>
+            <td class="metric">+323</td>
+            <td><span class="tag">Productivity</span></td>
+            <td class="summary">把文档直接生成可编辑 PPTX 的 AI 工具。</td>
+            <td class="summary">这类项目直接解决工作里很烦但经常做的任务，很能体现 AI 落地价值。</td>
+          </tr>
+          <tr>
+            <td class="rank">10</td>
+            <td><a href="https://github.com/AIDC-AI/Pixelle-Video" target="_blank" rel="noreferrer">AIDC-AI/Pixelle-Video</a></td>
+            <td class="metric">+341</td>
+            <td><span class="tag">Media</span></td>
+            <td class="summary">AI 全自动短视频引擎。</td>
+            <td class="summary">AI 视频不是新概念，真正有意思的是自动化流水线开始出来了。</td>
+          </tr></tbody></table></div></section>
+        <section><div class="section-head"><h2>本期总星数最高</h2><p class="note">看长期关注度，适合判断哪些 AI 产品方向已经有基础盘。</p></div><div class="table-wrap"><table><thead><tr><th>#</th><th>项目</th><th>总 Stars</th><th>分类</th><th>它是做什么的</th><th>产品启发</th></tr></thead><tbody>
+          <tr>
+            <td class="rank">1</td>
+            <td><a href="https://github.com/forrestchang/andrej-karpathy-skills" target="_blank" rel="noreferrer">forrestchang/andrej-karpathy-skills</a></td>
+            <td class="metric">4,369</td>
+            <td><span class="tag">AI</span></td>
+            <td class="summary">把 Claude Code 调教方式沉淀成单文件技能模板。</td>
+            <td class="summary">这说明现在很多大神关注的重点，是怎么把自己对 AI 的使用经验封装成可复制的方法论。</td>
+          </tr>
+          <tr>
+            <td class="rank">2</td>
+            <td><a href="https://github.com/NousResearch/hermes-agent" target="_blank" rel="noreferrer">NousResearch/hermes-agent</a></td>
+            <td class="metric">2,366</td>
+            <td><span class="tag">AI</span></td>
+            <td class="summary">一个主打可成长性的 AI Agent 项目。</td>
+            <td class="summary">AI Agent 最吸引人的方向之一，就是不再把 AI 当工具，而是当一个持续协作的数字同事。</td>
+          </tr>
+          <tr>
+            <td class="rank">3</td>
+            <td><a href="https://github.com/Alishahryar1/free-claude-code" target="_blank" rel="noreferrer">Alishahryar1/free-claude-code</a></td>
+            <td class="metric">2,126</td>
+            <td><span class="tag">AI</span></td>
+            <td class="summary">低成本把 Claude Code 接入终端、VS Code 和 Discord。</td>
+            <td class="summary">很多 AI 新玩法真正爆发的前提，是先把使用门槛降下来。</td>
+          </tr>
+          <tr>
+            <td class="rank">4</td>
+            <td><a href="https://github.com/mattpocock/skills" target="_blank" rel="noreferrer">mattpocock/skills</a></td>
+            <td class="metric">1,976</td>
+            <td><span class="tag">AI</span></td>
+            <td class="summary">把常见 AI 编码流程做成可复用技能目录。</td>
+            <td class="summary">这类项目很能代表接下来一年 AI 应用的趋势：不是比谁更会聊天，而是比谁的流程设计更成熟。</td>
+          </tr>
+          <tr>
+            <td class="rank">5</td>
+            <td><a href="https://github.com/refactoringhq/tolaria" target="_blank" rel="noreferrer">refactoringhq/tolaria</a></td>
+            <td class="metric">1,169</td>
+            <td><span class="tag">Productivity</span></td>
+            <td class="summary">管理 Markdown 知识库的桌面应用。</td>
+            <td class="summary">AI 要想真的帮人工作，背后一定需要更好的知识组织方式。</td>
+          </tr>
+          <tr>
+            <td class="rank">6</td>
+            <td><a href="https://github.com/JuliusBrussee/caveman" target="_blank" rel="noreferrer">JuliusBrussee/caveman</a></td>
+            <td class="metric">1,029</td>
+            <td><span class="tag">AI</span></td>
+            <td class="summary">通过极简提示风格帮 Claude Code 省 token 的技能。</td>
+            <td class="summary">现在很多优秀玩法未必复杂，反而是把一个高频痛点打磨得非常好。</td>
+          </tr>
+          <tr>
+            <td class="rank">7</td>
+            <td><a href="https://github.com/safishamsi/graphify" target="_blank" rel="noreferrer">safishamsi/graphify</a></td>
+            <td class="metric">789</td>
+            <td><span class="tag">Infra</span></td>
+            <td class="summary">把代码、文档、论文、图片都转成可查询知识图谱。</td>
+            <td class="summary">这类玩法说明 AI 的下一步不是单纯生成，而是先更聪明地理解上下文。</td>
+          </tr>
+          <tr>
+            <td class="rank">8</td>
+            <td><a href="https://github.com/multica-ai/multica" target="_blank" rel="noreferrer">multica-ai/multica</a></td>
+            <td class="metric">633</td>
+            <td><span class="tag">AI</span></td>
+            <td class="summary">把多个 coding agents 变成真正团队成员的管理平台。</td>
+            <td class="summary">这已经不是单点工具玩法，而是在探索 AI 团队协作产品。</td>
+          </tr>
+          <tr>
+            <td class="rank">9</td>
+            <td><a href="https://github.com/AIDC-AI/Pixelle-Video" target="_blank" rel="noreferrer">AIDC-AI/Pixelle-Video</a></td>
+            <td class="metric">341</td>
+            <td><span class="tag">Media</span></td>
+            <td class="summary">AI 全自动短视频引擎。</td>
+            <td class="summary">AI 视频不是新概念，真正有意思的是自动化流水线开始出来了。</td>
+          </tr>
+          <tr>
+            <td class="rank">10</td>
+            <td><a href="https://github.com/hugohe3/ppt-master" target="_blank" rel="noreferrer">hugohe3/ppt-master</a></td>
+            <td class="metric">323</td>
+            <td><span class="tag">Productivity</span></td>
+            <td class="summary">把文档直接生成可编辑 PPTX 的 AI 工具。</td>
+            <td class="summary">这类项目直接解决工作里很烦但经常做的任务，很能体现 AI 落地价值。</td>
+          </tr></tbody></table></div></section>
+        <section class="plain-section"><div class="section-head"><h2>今天的产品信号</h2><p class="note">产品经理视角的结论，不需要逐个仓库深挖也能看懂趋势。</p></div><ul class="signals"><li><strong>AI 最有价值的新玩法，越来越像工作流产品</strong>今天最热的项目里，有很多都不是在做一个大而全模型，而是在把 AI 包进具体工作步骤里，比如编码、知识整理、PPT、视频和桌面执行。</li><li><strong>大神们在拼的是系统设计能力</strong>从 skills 到 multica，再到 graphify，可以看到玩法已经升级成：如何组织上下文、如何安排 agent、如何让 AI 和已有系统配合。</li><li><strong>真正落地的 AI 项目，通常都能回答它替你省了哪一步</strong>不管是 PPT、视频、知识库还是 coding agent，这些项目最值得看的地方是：它具体替用户省掉了哪一段麻烦流程。</li></ul></section>
+        <section><div class="section-head"><h2>项目详情与产品启发</h2><p class="note">每个项目都附链接，先看它是做什么的，再看解决的问题、AI 用法和可借鉴点。</p></div><div class="project-grid">
+          <article class="project-card">
+            <h3><a href="https://github.com/forrestchang/andrej-karpathy-skills" target="_blank" rel="noreferrer">forrestchang/andrej-karpathy-skills</a></h3>
+            <span class="tag">AI</span>
+            <p><strong>它是做什么的：</strong>把 Claude Code 调教方式沉淀成单文件技能模板。</p>
+            <p><strong>解决什么问题：</strong>你可以把它理解成别人整理好的 AI 编码使用心得。它更像一种高质量工作流模板，帮助 AI 写代码时少犯低级错误。</p>
+            <p><strong>AI 玩法：</strong>这说明现在很多大神关注的重点，是怎么把自己对 AI 的使用经验封装成可复制的方法论。</p>
+            <p><strong>产品启发：</strong>这说明现在很多大神关注的重点，是怎么把自己对 AI 的使用经验封装成可复制的方法论。</p>
+          </article>
+          <article class="project-card">
+            <h3><a href="https://github.com/NousResearch/hermes-agent" target="_blank" rel="noreferrer">NousResearch/hermes-agent</a></h3>
+            <span class="tag">AI</span>
+            <p><strong>它是做什么的：</strong>一个主打可成长性的 AI Agent 项目。</p>
+            <p><strong>解决什么问题：</strong>简单理解，它想做的是让 AI 像一个会不断变强的助手，而不是一次性回答器。</p>
+            <p><strong>AI 玩法：</strong>AI Agent 最吸引人的方向之一，就是不再把 AI 当工具，而是当一个持续协作的数字同事。</p>
+            <p><strong>产品启发：</strong>AI Agent 最吸引人的方向之一，就是不再把 AI 当工具，而是当一个持续协作的数字同事。</p>
+          </article>
+          <article class="project-card">
+            <h3><a href="https://github.com/Alishahryar1/free-claude-code" target="_blank" rel="noreferrer">Alishahryar1/free-claude-code</a></h3>
+            <span class="tag">AI</span>
+            <p><strong>它是做什么的：</strong>低成本把 Claude Code 接入终端、VS Code 和 Discord。</p>
+            <p><strong>解决什么问题：</strong>它更像一个怎么让 AI 真正开始帮你干活的上手入口，重点是落地和接入。</p>
+            <p><strong>AI 玩法：</strong>很多 AI 新玩法真正爆发的前提，是先把使用门槛降下来。</p>
+            <p><strong>产品启发：</strong>很多 AI 新玩法真正爆发的前提，是先把使用门槛降下来。</p>
+          </article>
+          <article class="project-card">
+            <h3><a href="https://github.com/mattpocock/skills" target="_blank" rel="noreferrer">mattpocock/skills</a></h3>
+            <span class="tag">AI</span>
+            <p><strong>它是做什么的：</strong>把常见 AI 编码流程做成可复用技能目录。</p>
+            <p><strong>解决什么问题：</strong>你可以把它理解成 AI 工作流的积木。很多重复工作都能被做成模板，后面只要反复复用。</p>
+            <p><strong>AI 玩法：</strong>这类项目很能代表接下来一年 AI 应用的趋势：不是比谁更会聊天，而是比谁的流程设计更成熟。</p>
+            <p><strong>产品启发：</strong>这类项目很能代表接下来一年 AI 应用的趋势：不是比谁更会聊天，而是比谁的流程设计更成熟。</p>
+          </article>
+          <article class="project-card">
+            <h3><a href="https://github.com/refactoringhq/tolaria" target="_blank" rel="noreferrer">refactoringhq/tolaria</a></h3>
+            <span class="tag">Productivity</span>
+            <p><strong>它是做什么的：</strong>管理 Markdown 知识库的桌面应用。</p>
+            <p><strong>解决什么问题：</strong>它很像 AI 时代知识库产品会长成的样子：更强调信息整理、结构化和长期积累。</p>
+            <p><strong>AI 玩法：</strong>AI 要想真的帮人工作，背后一定需要更好的知识组织方式。</p>
+            <p><strong>产品启发：</strong>AI 要想真的帮人工作，背后一定需要更好的知识组织方式。</p>
+          </article>
+          <article class="project-card">
+            <h3><a href="https://github.com/JuliusBrussee/caveman" target="_blank" rel="noreferrer">JuliusBrussee/caveman</a></h3>
+            <span class="tag">AI</span>
+            <p><strong>它是做什么的：</strong>通过极简提示风格帮 Claude Code 省 token 的技能。</p>
+            <p><strong>解决什么问题：</strong>你可以把它理解成一种让 AI 说话更短、更省钱的小技巧工具。</p>
+            <p><strong>AI 玩法：</strong>现在很多优秀玩法未必复杂，反而是把一个高频痛点打磨得非常好。</p>
+            <p><strong>产品启发：</strong>现在很多优秀玩法未必复杂，反而是把一个高频痛点打磨得非常好。</p>
+          </article>
+          <article class="project-card">
+            <h3><a href="https://github.com/safishamsi/graphify" target="_blank" rel="noreferrer">safishamsi/graphify</a></h3>
+            <span class="tag">Infra</span>
+            <p><strong>它是做什么的：</strong>把代码、文档、论文、图片都转成可查询知识图谱。</p>
+            <p><strong>解决什么问题：</strong>这不是普通搜索，而是把内容整理成可以被 AI 查询和推理的图谱。</p>
+            <p><strong>AI 玩法：</strong>这类玩法说明 AI 的下一步不是单纯生成，而是先更聪明地理解上下文。</p>
+            <p><strong>产品启发：</strong>这类玩法说明 AI 的下一步不是单纯生成，而是先更聪明地理解上下文。</p>
+          </article>
+          <article class="project-card">
+            <h3><a href="https://github.com/multica-ai/multica" target="_blank" rel="noreferrer">multica-ai/multica</a></h3>
+            <span class="tag">AI</span>
+            <p><strong>它是做什么的：</strong>把多个 coding agents 变成真正团队成员的管理平台。</p>
+            <p><strong>解决什么问题：</strong>你可以把它理解成 AI 员工协作面板，像分配任务给同事一样给 agent 指派问题、跟踪进度。</p>
+            <p><strong>AI 玩法：</strong>这已经不是单点工具玩法，而是在探索 AI 团队协作产品。</p>
+            <p><strong>产品启发：</strong>这已经不是单点工具玩法，而是在探索 AI 团队协作产品。</p>
+          </article>
+          <article class="project-card">
+            <h3><a href="https://github.com/hugohe3/ppt-master" target="_blank" rel="noreferrer">hugohe3/ppt-master</a></h3>
+            <span class="tag">Productivity</span>
+            <p><strong>它是做什么的：</strong>把文档直接生成可编辑 PPTX 的 AI 工具。</p>
+            <p><strong>解决什么问题：</strong>把一份文档直接变成可编辑幻灯片，而且不是图片，而是真 PPT 元素。</p>
+            <p><strong>AI 玩法：</strong>这类项目直接解决工作里很烦但经常做的任务，很能体现 AI 落地价值。</p>
+            <p><strong>产品启发：</strong>这类项目直接解决工作里很烦但经常做的任务，很能体现 AI 落地价值。</p>
+          </article>
+          <article class="project-card">
+            <h3><a href="https://github.com/AIDC-AI/Pixelle-Video" target="_blank" rel="noreferrer">AIDC-AI/Pixelle-Video</a></h3>
+            <span class="tag">Media</span>
+            <p><strong>它是做什么的：</strong>AI 全自动短视频引擎。</p>
+            <p><strong>解决什么问题：</strong>你可以把它看成 AI 帮你直接出短视频的自动化系统。</p>
+            <p><strong>AI 玩法：</strong>AI 视频不是新概念，真正有意思的是自动化流水线开始出来了。</p>
+            <p><strong>产品启发：</strong>AI 视频不是新概念，真正有意思的是自动化流水线开始出来了。</p>
+          </article></div></section>
+      </main>
+    </div>
+  </body>
+</html>
