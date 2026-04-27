@@ -49,6 +49,7 @@
 - 运行时间：每天 UTC 00:00，也就是北京时间 08:00
 - 作用：Vercel 每天自动请求 `/api/daily`，让最新 AI 项目数据在云端更新缓存
 - 好处：不需要本地电脑开机
+- GitHub 仓库：`https://github.com/liuyihong66/ai-playbook-daily`
 
 注意：Vercel 函数本身不能永久改写已经部署好的静态文件，所以这套方式负责“最新日报自动更新”。如果要每天永久新增 `reports/YYYY-MM-DD.html` 和 `data/YYYY-MM-DD.json`，仍然需要 GitHub Actions 或数据库作为持久化存储。
 
