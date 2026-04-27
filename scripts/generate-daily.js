@@ -24,7 +24,9 @@ const APPLICATION_KEYWORDS = [
   "presentation", "office", "document", "docs", "pdf", "excel", "content",
   "creator", "creative", "poster", "avatar", "animation", "shorts", "edit",
   "editor", "studio", "canvas", "writing", "copywriting", "marketing", "social",
-  "website", "landing page", "chatbot", "assistant", "notion", "email"
+  "website", "landing page", "chatbot", "assistant", "notion", "email",
+  "generator", "generate", "caption", "subtitle", "transcription", "template",
+  "mockup", "thumbnail", "meme", "story", "resume", "meeting"
 ];
 
 const TECHNICAL_KEYWORDS = [
@@ -145,10 +147,18 @@ async function searchRepositories(since) {
     `topic:rag pushed:>=${since} stars:>30`,
     `ai app in:name,description pushed:>=${since} stars:>50`,
     `ai image in:name,description pushed:>=${since} stars:>20`,
+    `ai image generator in:name,description pushed:>=${since} stars:>10`,
     `ai video in:name,description pushed:>=${since} stars:>20`,
+    `ai video generator in:name,description pushed:>=${since} stars:>10`,
     `ai ppt OR slides in:name,description pushed:>=${since} stars:>20`,
+    `ai presentation in:name,description pushed:>=${since} stars:>10`,
     `ai design in:name,description pushed:>=${since} stars:>20`,
+    `ai photo editor in:name,description pushed:>=${since} stars:>10`,
     `ai content in:name,description pushed:>=${since} stars:>20`,
+    `ai writing in:name,description pushed:>=${since} stars:>10`,
+    `ai subtitle in:name,description pushed:>=${since} stars:>10`,
+    `ai voice in:name,description pushed:>=${since} stars:>10`,
+    `ai website builder in:name,description pushed:>=${since} stars:>10`,
     `ai office in:name,description pushed:>=${since} stars:>20`,
     `ai tool in:name,description pushed:>=${since} stars:>30`,
     `llm agent in:name,description pushed:>=${since} stars:>30`,

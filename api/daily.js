@@ -21,7 +21,9 @@ const APPLICATION = [
   "presentation", "office", "document", "docs", "pdf", "excel", "content",
   "creator", "creative", "poster", "avatar", "animation", "shorts", "edit",
   "editor", "studio", "canvas", "writing", "copywriting", "marketing", "social",
-  "website", "landing page", "chatbot", "assistant", "email"
+  "website", "landing page", "chatbot", "assistant", "email", "generator",
+  "generate", "caption", "subtitle", "transcription", "template", "mockup",
+  "thumbnail", "meme", "story", "resume", "meeting"
 ];
 
 const TECHNICAL = [
@@ -196,10 +198,18 @@ export default async function handler(_request, response) {
       `topic:agent pushed:>=${since} stars:>30`,
       `ai workflow in:name,description pushed:>=${since} stars:>30`,
       `ai image in:name,description pushed:>=${since} stars:>20`,
+      `ai image generator in:name,description pushed:>=${since} stars:>10`,
       `ai video in:name,description pushed:>=${since} stars:>20`,
+      `ai video generator in:name,description pushed:>=${since} stars:>10`,
       `ai ppt OR slides in:name,description pushed:>=${since} stars:>20`,
+      `ai presentation in:name,description pushed:>=${since} stars:>10`,
       `ai design in:name,description pushed:>=${since} stars:>20`,
+      `ai photo editor in:name,description pushed:>=${since} stars:>10`,
       `ai content in:name,description pushed:>=${since} stars:>20`,
+      `ai writing in:name,description pushed:>=${since} stars:>10`,
+      `ai subtitle in:name,description pushed:>=${since} stars:>10`,
+      `ai voice in:name,description pushed:>=${since} stars:>10`,
+      `ai website builder in:name,description pushed:>=${since} stars:>10`,
       `ai office in:name,description pushed:>=${since} stars:>20`,
       `ai tool in:name,description pushed:>=${since} stars:>20`
     ];
@@ -250,10 +260,12 @@ export default async function handler(_request, response) {
       }));
     if (applicationPlaybooks.length < 10) {
       const picked = new Set([...growthNames, ...applicationPlaybooks.map((repo) => repo.name)]);
+      const appishCategories = new Set(["Media", "Creative", "Presentation", "Productivity"]);
       applicationPlaybooks = [
         ...applicationPlaybooks,
         ...filtered
           .filter((repo) => !picked.has(repo.name))
+          .filter((repo) => appishCategories.has(repo.category))
           .sort((a, b) => (b.starsToday - a.starsToday) || (b.starsTotal - a.starsTotal))
           .slice(0, 10 - applicationPlaybooks.length)
           .map((repo, index) => ({ rank: applicationPlaybooks.length + index + 1, ...repo }))
