@@ -77,6 +77,27 @@ async function fetchTrending(url) {
   }).filter(Boolean);
 }
 
+async function fetchSearchRepos(query) {
+  const url = `https://api.github.com/search/repositories?q=${encodeURIComponent(query)}&sort=stars&order=desc&per_page=20`;
+  const response = await fetch(url, {
+    headers: {
+      Accept: "application/vnd.github+json",
+      "User-Agent": "ai-playbook-daily"
+    }
+  });
+  if (!response.ok) throw new Error(`${response.status} ${url}`);
+  const result = await response.json();
+  return (result.items || []).map((repo) => ({
+    name: repo.full_name,
+    url: repo.html_url,
+    summary: repo.description || "一个正在增长的 AI 相关开源项目。",
+    starsToday: 0,
+    starsTotal: repo.stargazers_count || 0,
+    forks: repo.forks_count || 0,
+    topics: repo.topics || []
+  }));
+}
+
 function categoryFor(repo) {
   const text = `${repo.name} ${repo.summary}`.toLowerCase();
   if (/(ppt|slides|presentation|deck)/.test(text)) return "Presentation";
@@ -169,6 +190,26 @@ export default async function handler(_request, response) {
         console.warn(error.message);
       }
     }
+    const since = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
+    const searchQueries = [
+      `topic:ai pushed:>=${since} stars:>50`,
+      `topic:agent pushed:>=${since} stars:>30`,
+      `ai workflow in:name,description pushed:>=${since} stars:>30`,
+      `ai image in:name,description pushed:>=${since} stars:>20`,
+      `ai video in:name,description pushed:>=${since} stars:>20`,
+      `ai ppt OR slides in:name,description pushed:>=${since} stars:>20`,
+      `ai design in:name,description pushed:>=${since} stars:>20`,
+      `ai content in:name,description pushed:>=${since} stars:>20`,
+      `ai office in:name,description pushed:>=${since} stars:>20`,
+      `ai tool in:name,description pushed:>=${since} stars:>20`
+    ];
+    for (const query of searchQueries) {
+      try {
+        all.push(...await fetchSearchRepos(query));
+      } catch (error) {
+        console.warn(error.message);
+      }
+    }
     const unique = [...new Map(all.map((repo) => [repo.name, repo])).values()];
     const filtered = unique
       .filter(isUsefulAiProject)
@@ -178,7 +219,7 @@ export default async function handler(_request, response) {
         ...explain(repo)
       }));
 
-    const repos = [...filtered]
+    let repos = [...filtered]
       .filter(isTechnicalAiProject)
       .sort((a, b) => (b.starsToday - a.starsToday) || (b.starsTotal - a.starsTotal))
       .slice(0, 10)
@@ -186,8 +227,19 @@ export default async function handler(_request, response) {
         rank: index + 1,
         ...repo
       }));
+    if (repos.length < 10) {
+      const picked = new Set(repos.map((repo) => repo.name));
+      repos = [
+        ...repos,
+        ...filtered
+          .filter((repo) => !picked.has(repo.name))
+          .sort((a, b) => (b.starsToday - a.starsToday) || (b.starsTotal - a.starsTotal))
+          .slice(0, 10 - repos.length)
+          .map((repo, index) => ({ rank: repos.length + index + 1, ...repo }))
+      ];
+    }
     const growthNames = new Set(repos.map((repo) => repo.name));
-    const applicationPlaybooks = filtered
+    let applicationPlaybooks = filtered
       .filter(isApplicationPlaybook)
       .filter((repo) => !growthNames.has(repo.name))
       .sort((a, b) => (b.starsToday - a.starsToday) || (b.starsTotal - a.starsTotal))
@@ -196,6 +248,17 @@ export default async function handler(_request, response) {
         rank: index + 1,
         ...repo
       }));
+    if (applicationPlaybooks.length < 10) {
+      const picked = new Set([...growthNames, ...applicationPlaybooks.map((repo) => repo.name)]);
+      applicationPlaybooks = [
+        ...applicationPlaybooks,
+        ...filtered
+          .filter((repo) => !picked.has(repo.name))
+          .sort((a, b) => (b.starsToday - a.starsToday) || (b.starsTotal - a.starsTotal))
+          .slice(0, 10 - applicationPlaybooks.length)
+          .map((repo, index) => ({ rank: applicationPlaybooks.length + index + 1, ...repo }))
+      ];
+    }
 
     const date = todayShanghai();
     response.setHeader("Cache-Control", "s-maxage=86400, stale-while-revalidate=3600");
