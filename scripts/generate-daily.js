@@ -19,6 +19,19 @@ const PRODUCT_KEYWORDS = [
   "dashboard", "platform", "client", "ui", "studio"
 ];
 
+const APPLICATION_KEYWORDS = [
+  "image", "video", "audio", "voice", "photo", "music", "design", "ppt", "slides",
+  "presentation", "office", "document", "docs", "pdf", "excel", "content",
+  "creator", "creative", "poster", "avatar", "animation", "shorts", "edit",
+  "editor", "studio", "canvas", "writing", "copywriting", "marketing", "social",
+  "website", "landing page", "chatbot", "assistant", "notion", "email"
+];
+
+const TECHNICAL_KEYWORDS = [
+  "agent", "llm", "rag", "mcp", "workflow", "automation", "coding", "code",
+  "developer", "inference", "embedding", "model", "framework", "sdk", "api"
+];
+
 const CORE_AI_KEYWORDS = [
   "ai", "agent", "agents", "llm", "gpt", "claude", "openai", "gemini", "rag",
   "prompt", "copilot", "chatbot", "embedding", "inference", "mcp", "computer use"
@@ -131,8 +144,14 @@ async function searchRepositories(since) {
     `topic:agent pushed:>=${since} stars:>30`,
     `topic:rag pushed:>=${since} stars:>30`,
     `ai app in:name,description pushed:>=${since} stars:>50`,
+    `ai image in:name,description pushed:>=${since} stars:>20`,
+    `ai video in:name,description pushed:>=${since} stars:>20`,
+    `ai ppt OR slides in:name,description pushed:>=${since} stars:>20`,
+    `ai design in:name,description pushed:>=${since} stars:>20`,
+    `ai content in:name,description pushed:>=${since} stars:>20`,
+    `ai office in:name,description pushed:>=${since} stars:>20`,
+    `ai tool in:name,description pushed:>=${since} stars:>30`,
     `llm agent in:name,description pushed:>=${since} stars:>30`,
-    `claude code in:name,description pushed:>=${since} stars:>30`,
     `ai workflow in:name,description pushed:>=${since} stars:>30`
   ];
   const repos = [];
@@ -178,9 +197,10 @@ function scoreRepo(repo) {
   const text = `${repo.name} ${repo.description} ${repo.language} ${(repo.topics || []).join(" ")}`.toLowerCase();
   const positive = POSITIVE_KEYWORDS.filter((keyword) => hasKeyword(text, keyword)).length;
   const product = PRODUCT_KEYWORDS.filter((keyword) => hasKeyword(text, keyword)).length;
+  const application = APPLICATION_KEYWORDS.filter((keyword) => hasKeyword(text, keyword)).length;
   const negative = NEGATIVE_KEYWORDS.filter((keyword) => hasKeyword(text, keyword)).length;
   const trendingBoost = repo.starsToday >= 50 ? 3 : repo.source === "trending" ? 1 : 0;
-  return positive * 2 + product + trendingBoost - negative * 4;
+  return positive * 2 + product + application * 2 + trendingBoost - negative * 4;
 }
 
 function hasKeyword(text, keyword) {
@@ -190,6 +210,8 @@ function hasKeyword(text, keyword) {
 
 function categoryFor(repo) {
   const text = `${repo.name} ${repo.description} ${(repo.topics || []).join(" ")}`.toLowerCase();
+  if (/(ppt|slides|presentation|deck)/.test(text)) return "Presentation";
+  if (/(design|poster|avatar|canvas|creative|creator|studio|website|landing page)/.test(text)) return "Creative";
   if (/(video|image|audio|voice|media|diffusion|vision)/.test(text)) return "Media";
   if (/(code|coding|developer|devtool|claude code|copilot|mcp)/.test(text)) return "AI Coding";
   if (/(rag|knowledge|search|graph|docs|database)/.test(text)) return "Knowledge";
@@ -205,6 +227,22 @@ function isStrictAiApplication(repo) {
   const looksLikePureList = NEGATIVE_KEYWORDS.some((keyword) => hasKeyword(text, keyword));
   const hasProductSignal = PRODUCT_KEYWORDS.some((keyword) => hasKeyword(text, keyword));
   return score >= 4 && hasAiSignal && hasProductSignal && !looksLikePureList;
+}
+
+function isActualApplicationPlay(repo) {
+  const text = `${repo.name} ${repo.description} ${(repo.topics || []).join(" ")}`.toLowerCase();
+  const hasAiSignal = CORE_AI_KEYWORDS.some((keyword) => hasKeyword(text, keyword));
+  const hasApplicationSignal = APPLICATION_KEYWORDS.some((keyword) => hasKeyword(text, keyword));
+  const looksLikePureList = NEGATIVE_KEYWORDS.some((keyword) => hasKeyword(text, keyword));
+  return hasAiSignal && hasApplicationSignal && !looksLikePureList && scoreRepo(repo) >= 5;
+}
+
+function isTechnicalAiProject(repo) {
+  const text = `${repo.name} ${repo.description} ${repo.language} ${(repo.topics || []).join(" ")}`.toLowerCase();
+  const hasAiSignal = CORE_AI_KEYWORDS.some((keyword) => hasKeyword(text, keyword));
+  const hasTechnicalSignal = TECHNICAL_KEYWORDS.some((keyword) => hasKeyword(text, keyword));
+  const looksLikePureList = NEGATIVE_KEYWORDS.some((keyword) => hasKeyword(text, keyword));
+  return hasAiSignal && hasTechnicalSignal && !looksLikePureList && scoreRepo(repo) >= 4;
 }
 
 function explain(repo) {
@@ -300,13 +338,13 @@ function productInspiration(repo) {
 }
 
 function renderHtml(dataset, currentDate, isReport = false) {
-  const repos = dataset.fastestGrowth;
-  const starred = [...repos].sort((a, b) => b.starsTotal - a.starsTotal);
+  const repos = dataset.aiProjects || dataset.fastestGrowth;
+  const playbooks = dataset.applicationPlaybooks || dataset.mostStarred || [];
   const prefix = isReport ? ".." : ".";
   const nav = isReport
     ? `<a class="nav-link" href="../index.html">返回最新日报</a><a class="nav-link" href="../archive.html">查看历史归档</a><a class="nav-link" href="../data/${currentDate}.json">查看当天原始数据</a>`
     : `<a class="nav-link" href="./archive.html">查看历史归档</a><a class="nav-link" href="./data/${currentDate}.json">查看今日原始数据</a>`;
-  const projectCards = repos.map((repo) => `
+  const projectCards = [...repos, ...playbooks.filter((repo) => !repos.some((item) => item.name === repo.name))].map((repo) => `
           <article class="project-card">
             <h3><a href="${repo.url}" target="_blank" rel="noreferrer">${escapeHtml(repo.name)}</a></h3>
             <span class="tag">${escapeHtml(repo.category)}</span>
@@ -334,15 +372,15 @@ function renderHtml(dataset, currentDate, isReport = false) {
         <div class="eyebrow">AI Product Radar</div>
         <h1>AI 产品灵感日报</h1>
         <p class="intro">帮你从 GitHub 上的 AI 项目里提炼产品灵感。每天固定 10 条，重点回答：大神们在用 AI 解决什么问题，具体怎么玩，以及这些项目能给 AI 产品设计带来什么启发。</p>
-        <div class="meta"><span class="pill">更新时间：${dataset.meta.lastUpdated}</span><span class="pill">主题：AI 产品灵感</span><span class="pill">数量：${repos.length} 条</span><span class="pill">口径：24h 增长 + 严格 AI 应用筛选</span></div>
+        <div class="meta"><span class="pill">更新时间：${dataset.meta.lastUpdated}</span><span class="pill">主题：AI 产品灵感</span><span class="pill">AI 项目：${repos.length} 条</span><span class="pill">应用玩法：${playbooks.length} 条</span></div>
         <nav class="top-nav" aria-label="页面导航">${nav}</nav>
       </header>
       <main>
-        <section class="callout"><div class="section-head"><h2>今天先看什么</h2><p class="note">如果时间不多，先看增长榜前 3，再看总星榜前 3。</p></div><p>${escapeHtml(dataset.overview.themeNote)}</p></section>
-        <section><div class="section-head"><h2>24 小时增长最快</h2><p class="note">只保留和 AI 实际应用、Agent、工作流、内容生产、开发者工具有关的项目。</p></div><div class="table-wrap"><table>${renderTable(repos, "growth")}</table></div></section>
-        <section><div class="section-head"><h2>本期总星数最高</h2><p class="note">看长期关注度，适合判断哪些 AI 产品方向已经有基础盘。</p></div><div class="table-wrap"><table>${renderTable(starred, "stars")}</table></div></section>
+        <section class="callout"><div class="section-head"><h2>今天先看什么</h2><p class="note">先看 AI 项目榜判断风向，再看应用玩法榜找产品灵感。</p></div><p>${escapeHtml(dataset.overview.themeNote)}</p></section>
+        <section><div class="section-head"><h2>24 小时星数最高的 AI 项目</h2><p class="note">偏技术、工具、Agent、工作流和基础能力，帮你看 GitHub 大神们在搭什么。</p></div><div class="table-wrap"><table>${renderTable(repos, "growth")}</table></div></section>
+        <section><div class="section-head"><h2>24 小时星数最高的实际应用玩法</h2><p class="note">偏图片、视频、PPT、设计、内容生产、办公工具和可直接上手的 AI 用法。</p></div><div class="table-wrap"><table>${renderTable(playbooks, "growth")}</table></div></section>
         <section class="plain-section"><div class="section-head"><h2>今天的产品信号</h2><p class="note">产品经理视角的结论，不需要逐个仓库深挖也能看懂趋势。</p></div><ul class="signals">${dataset.signals.map((signal) => `<li><strong>${escapeHtml(signal.title)}</strong>${escapeHtml(signal.description)}</li>`).join("")}</ul></section>
-        <section><div class="section-head"><h2>项目详情与产品启发</h2><p class="note">每个项目都附链接，先看它是做什么的，再看解决的问题、AI 用法和可借鉴点。</p></div><div class="project-grid">${projectCards}</div></section>
+        <section><div class="section-head"><h2>项目详情与产品启发</h2><p class="note">合并两张榜单并去重，先看它是做什么的，再看解决的问题、AI 用法和可借鉴点。</p></div><div class="project-grid">${projectCards}</div></section>
       </main>
     </div>
   </body>
@@ -468,13 +506,22 @@ async function main() {
     if (enriched.length >= 30) break;
   }
 
-  const selected = enriched
+  const aiProjects = enriched
+    .filter(isTechnicalAiProject)
     .sort((a, b) => (b.starsToday - a.starsToday) || (b.starsTotal - a.starsTotal))
     .slice(0, 10)
     .map((repo, index) => normalizeRepo(repo, index + 1));
 
-  if (selected.length < 5) {
-    throw new Error(`严格筛选后只有 ${selected.length} 个项目，低于最低质量线，停止更新以免生成低质量日报。`);
+  const aiProjectNames = new Set(aiProjects.map((repo) => repo.name));
+  const applicationPlaybooks = enriched
+    .filter(isActualApplicationPlay)
+    .filter((repo) => !aiProjectNames.has(repo.name))
+    .sort((a, b) => (b.starsToday - a.starsToday) || (b.starsTotal - a.starsTotal))
+    .slice(0, 10)
+    .map((repo, index) => normalizeRepo(repo, index + 1));
+
+  if (aiProjects.length < 5 || applicationPlaybooks.length < 3) {
+    throw new Error(`严格筛选后 AI 项目 ${aiProjects.length} 个、应用玩法 ${applicationPlaybooks.length} 个，低于最低质量线，停止更新以免生成低质量日报。`);
   }
 
   const dataset = {
@@ -482,17 +529,20 @@ async function main() {
       lastUpdated: `${today} 08:00`,
       nextUpdate: "每天 08:00",
       source: "GitHub Trending + GitHub Search API",
-      selectionRule: "严格保留 AI 实际应用、Agent、工作流、内容生产、开发者工具、知识库等项目，过滤纯列表、教程、主题、加密等弱相关项目。"
+      selectionRule: "每天分成两张榜：10 条 24 小时星数最高的 AI 项目，10 条 24 小时星数最高的实际应用玩法。应用玩法优先图片、视频、PPT、设计、内容生产、办公工具和可直接上手的 AI 用法。"
     },
     overview: {
       observedDate: today.slice(5).replace("-", "/"),
-      theme: "AI 实际应用和产品玩法",
-      themeNote: `今天从 GitHub 热门项目中严格筛选出 ${selected.length} 个更接近 AI 实际应用的项目，重点看高手们如何把 AI 放进具体工作流。`,
-      scope: "每天固定最多 10 条，宁缺毋滥。",
-      note: "先看增长榜前 3，再看总星榜前 3。"
+      theme: "AI 项目 + 实际应用玩法",
+      themeNote: `今天分成两张榜：${aiProjects.length} 条 AI 项目用来看技术风向，${applicationPlaybooks.length} 条实际应用玩法用来看图片、视频、PPT、内容生产和工具类灵感。`,
+      scope: "每天两张榜各最多 10 条，宁缺毋滥。",
+      note: "先看 AI 项目榜前 3，再看应用玩法榜前 3。"
     },
-    fastestGrowth: selected,
-    signals: buildSignals(selected)
+    aiProjects,
+    applicationPlaybooks,
+    fastestGrowth: aiProjects,
+    mostStarred: applicationPlaybooks,
+    signals: buildSignals([...aiProjects, ...applicationPlaybooks])
   };
 
   const dataPath = path.join(DATA_DIR, `${today}.json`);

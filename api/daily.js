@@ -16,6 +16,19 @@ const PRODUCT = [
   "dashboard", "platform", "client", "ui", "studio"
 ];
 
+const APPLICATION = [
+  "image", "video", "audio", "voice", "photo", "music", "design", "ppt", "slides",
+  "presentation", "office", "document", "docs", "pdf", "excel", "content",
+  "creator", "creative", "poster", "avatar", "animation", "shorts", "edit",
+  "editor", "studio", "canvas", "writing", "copywriting", "marketing", "social",
+  "website", "landing page", "chatbot", "assistant", "email"
+];
+
+const TECHNICAL = [
+  "agent", "llm", "rag", "mcp", "workflow", "automation", "coding", "code",
+  "developer", "inference", "embedding", "model", "framework", "sdk", "api"
+];
+
 const NEGATIVE = [
   "awesome", "paper-list", "roadmap", "interview", "leetcode", "wallpaper",
   "theme", "dotfiles", "config", "crypto", "blockchain", "token", "nft"
@@ -66,6 +79,8 @@ async function fetchTrending(url) {
 
 function categoryFor(repo) {
   const text = `${repo.name} ${repo.summary}`.toLowerCase();
+  if (/(ppt|slides|presentation|deck)/.test(text)) return "Presentation";
+  if (/(design|poster|avatar|canvas|creative|creator|studio|website|landing page)/.test(text)) return "Creative";
   if (/(video|image|audio|voice|media|diffusion|vision)/.test(text)) return "Media";
   if (/(code|coding|developer|devtool|claude code|copilot|mcp)/.test(text)) return "AI Coding";
   if (/(rag|knowledge|search|graph|docs|database)/.test(text)) return "Knowledge";
@@ -80,6 +95,22 @@ function isUsefulAiProject(repo) {
   const hasProduct = PRODUCT.some((keyword) => hasKeyword(text, keyword));
   const bad = NEGATIVE.some((keyword) => hasKeyword(text, keyword));
   return hasAi && hasProduct && !bad;
+}
+
+function isTechnicalAiProject(repo) {
+  const text = `${repo.name} ${repo.summary}`.toLowerCase();
+  const hasAi = CORE_AI.some((keyword) => hasKeyword(text, keyword));
+  const hasTechnical = TECHNICAL.some((keyword) => hasKeyword(text, keyword));
+  const bad = NEGATIVE.some((keyword) => hasKeyword(text, keyword));
+  return hasAi && hasTechnical && !bad;
+}
+
+function isApplicationPlaybook(repo) {
+  const text = `${repo.name} ${repo.summary}`.toLowerCase();
+  const hasAi = CORE_AI.some((keyword) => hasKeyword(text, keyword));
+  const hasApplication = APPLICATION.some((keyword) => hasKeyword(text, keyword));
+  const bad = NEGATIVE.some((keyword) => hasKeyword(text, keyword));
+  return hasAi && hasApplication && !bad;
 }
 
 function explain(repo) {
@@ -139,15 +170,31 @@ export default async function handler(_request, response) {
       }
     }
     const unique = [...new Map(all.map((repo) => [repo.name, repo])).values()];
-    const repos = unique
+    const filtered = unique
       .filter(isUsefulAiProject)
+      .map((repo) => ({
+        ...repo,
+        category: categoryFor(repo),
+        ...explain(repo)
+      }));
+
+    const repos = [...filtered]
+      .filter(isTechnicalAiProject)
       .sort((a, b) => (b.starsToday - a.starsToday) || (b.starsTotal - a.starsTotal))
       .slice(0, 10)
       .map((repo, index) => ({
         rank: index + 1,
-        ...repo,
-        category: categoryFor(repo),
-        ...explain(repo)
+        ...repo
+      }));
+    const growthNames = new Set(repos.map((repo) => repo.name));
+    const applicationPlaybooks = filtered
+      .filter(isApplicationPlaybook)
+      .filter((repo) => !growthNames.has(repo.name))
+      .sort((a, b) => (b.starsToday - a.starsToday) || (b.starsTotal - a.starsTotal))
+      .slice(0, 10)
+      .map((repo, index) => ({
+        rank: index + 1,
+        ...repo
       }));
 
     const date = todayShanghai();
@@ -156,14 +203,17 @@ export default async function handler(_request, response) {
       meta: {
         lastUpdated: `${date} 08:00`,
         source: "Vercel Cron + GitHub Trending",
-        count: repos.length,
-        note: "线上自动更新版：每天北京时间 08:00 由 Vercel Cron 预热；打开页面时也会按缓存读取最新数据。"
+        count: repos.length + applicationPlaybooks.length,
+        note: "线上自动更新版：每天北京时间 08:00 由 Vercel Cron 预热；分成 AI 项目榜和实际应用玩法榜。"
       },
       repos,
+      aiProjects: repos,
+      applicationPlaybooks,
+      mostStarred: applicationPlaybooks,
       signals: [
-        "今天优先看：AI 是否进入了具体工作流，而不是只停留在模型或聊天框。",
+        "今天分两条线看：AI 项目榜看技术风向，应用玩法榜看图片、视频、PPT、内容生产和工具灵感。",
         "判断产品机会：它是否替用户省掉一个真实、重复、费时间的步骤。",
-        "如果一个项目能直接交付结果或嵌入已有工具，通常比纯技术 demo 更值得看。"
+        "应用玩法榜优先保留能直接产出结果或嵌入已有工作流的项目。"
       ]
     });
   } catch (error) {

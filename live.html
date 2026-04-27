@@ -29,15 +29,16 @@
         const response = await fetch("./api/daily", { cache: "no-store" });
         if (!response.ok) throw new Error(`HTTP ${response.status}`);
         const data = await response.json();
-        const repos = data.repos || [];
-        const starred = [...repos].sort((a, b) => b.starsTotal - a.starsTotal);
-        document.querySelector("#meta").innerHTML = `<span class="pill">更新时间：${esc(data.meta.lastUpdated)}</span><span class="pill">主题：AI 产品灵感</span><span class="pill">数量：${repos.length} 条</span><span class="pill">口径：Vercel Cron 自动更新</span>`;
+        const repos = data.aiProjects || data.repos || [];
+        const playbooks = data.applicationPlaybooks || data.mostStarred || [];
+        const projectItems = [...repos, ...playbooks.filter((repo) => !repos.some((item) => item.name === repo.name))];
+        document.querySelector("#meta").innerHTML = `<span class="pill">更新时间：${esc(data.meta.lastUpdated)}</span><span class="pill">主题：AI 产品灵感</span><span class="pill">AI 项目：${repos.length} 条</span><span class="pill">应用玩法：${playbooks.length} 条</span>`;
         document.querySelector("#app").innerHTML = `
-          <section class="callout"><div class="section-head"><h2>今天先看什么</h2><p class="note">先看增长榜前 3，再看总星榜前 3。</p></div><p>${esc(data.signals?.[0] || data.meta.note)}</p></section>
-          <section><div class="section-head"><h2>24 小时增长最快</h2><p class="note">线上自动筛选 AI 实际应用、Agent、工作流、内容生产和开发者工具。</p></div><div class="table-wrap"><table>${tableRows(repos, "growth")}</table></div></section>
-          <section><div class="section-head"><h2>本期总星数最高</h2><p class="note">看长期关注度，判断哪些方向已经有基础盘。</p></div><div class="table-wrap"><table>${tableRows(starred, "stars")}</table></div></section>
+          <section class="callout"><div class="section-head"><h2>今天先看什么</h2><p class="note">先看 AI 项目榜判断风向，再看应用玩法榜找灵感。</p></div><p>${esc(data.signals?.[0] || data.meta.note)}</p></section>
+          <section><div class="section-head"><h2>24 小时星数最高的 AI 项目</h2><p class="note">偏技术、工具、Agent、工作流和基础能力，帮你看 GitHub 大神们在搭什么。</p></div><div class="table-wrap"><table>${tableRows(repos, "growth")}</table></div></section>
+          <section><div class="section-head"><h2>24 小时星数最高的实际应用玩法</h2><p class="note">偏图片、视频、PPT、设计、内容生产、办公工具和可直接上手的 AI 用法。</p></div><div class="table-wrap"><table>${tableRows(playbooks, "growth")}</table></div></section>
           <section class="plain-section"><div class="section-head"><h2>今天的产品信号</h2><p class="note">产品经理视角的快速结论。</p></div><ul class="signals">${(data.signals || []).map((signal) => `<li>${esc(signal)}</li>`).join("")}</ul></section>
-          <section><div class="section-head"><h2>项目详情与产品启发</h2><p class="note">先看它是做什么的，再看问题、玩法和启发。</p></div><div class="project-grid">${repos.map((repo)=>`<article class="project-card"><h3><a href="${repo.url}" target="_blank" rel="noreferrer">${esc(repo.name)}</a></h3><span class="tag">${esc(repo.category)}</span><p><strong>它是做什么的：</strong>${esc(repo.summary)}</p><p><strong>解决什么问题：</strong>${esc(repo.problem)}</p><p><strong>AI 玩法：</strong>${esc(repo.play)}</p><p><strong>产品启发：</strong>${esc(repo.inspiration)}</p></article>`).join("")}</div></section>
+          <section><div class="section-head"><h2>项目详情与产品启发</h2><p class="note">合并两张榜单并去重，先看它是做什么的，再看问题、玩法和启发。</p></div><div class="project-grid">${projectItems.map((repo)=>`<article class="project-card"><h3><a href="${repo.url}" target="_blank" rel="noreferrer">${esc(repo.name)}</a></h3><span class="tag">${esc(repo.category)}</span><p><strong>它是做什么的：</strong>${esc(repo.summary)}</p><p><strong>解决什么问题：</strong>${esc(repo.problem)}</p><p><strong>AI 玩法：</strong>${esc(repo.play)}</p><p><strong>产品启发：</strong>${esc(repo.inspiration)}</p></article>`).join("")}</div></section>
         `;
       }
       boot().catch((error) => {
