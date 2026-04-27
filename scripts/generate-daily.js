@@ -322,18 +322,28 @@ function escapeHtml(value = "") {
     .replace(/"/g, "&quot;");
 }
 
-function renderTable(repos, mode) {
-  const metric = mode === "growth" ? "今日新增" : "总 Stars";
-  const rows = repos.map((repo, index) => `
-          <tr>
-            <td class="rank">${index + 1}</td>
-            <td><a href="${repo.url}" target="_blank" rel="noreferrer">${escapeHtml(repo.name)}</a></td>
-            <td class="metric">${mode === "growth" ? `+${repo.starsToday.toLocaleString("en-US")}` : repo.starsTotal.toLocaleString("en-US")}</td>
-            <td><span class="tag">${escapeHtml(repo.category)}</span></td>
-            <td class="summary">${escapeHtml(repo.summary)}</td>
-            <td class="summary">${escapeHtml(productInspiration(repo))}</td>
-          </tr>`).join("");
-  return `<thead><tr><th>#</th><th>项目</th><th>${metric}</th><th>分类</th><th>它是做什么的</th><th>产品启发</th></tr></thead><tbody>${rows}</tbody>`;
+function starLabel(repo) {
+  return repo.starsToday > 0 ? `+${repo.starsToday.toLocaleString("en-US")} 今日新增` : "未取到 24h 星数";
+}
+
+function renderRepoList(repos) {
+  return `<div class="repo-list">${repos.map((repo, index) => `
+        <article class="repo-item">
+          <div class="repo-main">
+            <span class="rank">${index + 1}</span>
+            <div class="repo-title"><a href="${repo.url}" target="_blank" rel="noreferrer">${escapeHtml(repo.name)}</a><span class="tag">${escapeHtml(repo.category)}</span></div>
+            <div class="repo-metrics"><span>${starLabel(repo)}</span><span>${repo.starsTotal.toLocaleString("en-US")} 总 Stars</span></div>
+          </div>
+          <details>
+            <summary>展开：它做什么 / AI 玩法 / 产品启发</summary>
+            <div class="detail-grid">
+              <p><strong>它是做什么的：</strong>${escapeHtml(repo.summary)}</p>
+              <p><strong>解决什么问题：</strong>${escapeHtml(projectProblem(repo))}</p>
+              <p><strong>AI 玩法：</strong>${escapeHtml(projectPlay(repo))}</p>
+              <p><strong>产品启发：</strong>${escapeHtml(productInspiration(repo))}</p>
+            </div>
+          </details>
+        </article>`).join("")}</div>`;
 }
 
 function projectProblem(repo) {
@@ -374,7 +384,7 @@ function renderHtml(dataset, currentDate, isReport = false) {
     <title>AI 产品灵感日报</title>
     <style>
       :root { --bg:#f7f7f4; --paper:#fff; --ink:#18221d; --muted:#65716b; --line:#dfe4df; --green:#0f7a55; --green-soft:#e8f4ee; --amber-soft:#fff3df; }
-      *{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--ink);font-family:"Segoe UI","Microsoft YaHei",Arial,sans-serif;line-height:1.65}.page{width:min(1080px,calc(100% - 32px));margin:0 auto;padding:28px 0 56px}header{padding:28px 0 22px;border-bottom:3px solid var(--ink)}.eyebrow{color:var(--green);font-size:13px;font-weight:800;letter-spacing:.08em;text-transform:uppercase}h1{margin:8px 0 10px;font-size:42px;line-height:1.15}.intro{max-width:860px;margin:0;color:var(--muted);font-size:17px}.meta,.top-nav{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}.top-nav{margin-top:14px}.pill,.nav-link{display:inline-flex;align-items:center;border:1px solid var(--line);background:var(--paper);border-radius:999px;padding:7px 11px;color:var(--muted);font-size:13px;font-weight:700}.nav-link{color:var(--green)}main{display:grid;gap:34px;margin-top:28px}section{background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:22px}.plain-section{background:transparent;border:0;border-radius:0;padding:0}.section-head{display:flex;justify-content:space-between;align-items:end;gap:16px;margin-bottom:16px}h2{margin:0;font-size:26px}.note{margin:0;max-width:44ch;color:var(--muted);text-align:right}table{width:100%;border-collapse:collapse}th,td{padding:12px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}th{color:var(--muted);font-size:13px;white-space:nowrap}tr:last-child td{border-bottom:0}.rank{width:44px;color:var(--green);font-weight:800}a{color:var(--green);font-weight:800;text-decoration:none}a:hover{text-decoration:underline}.metric{white-space:nowrap;font-weight:800}.summary{color:var(--muted)}.tag{display:inline-flex;border-radius:999px;padding:4px 8px;background:var(--green-soft);color:var(--green);font-size:12px;font-weight:800}.signals{display:grid;gap:12px;margin:0;padding:0;list-style:none}.signals li{border-left:4px solid var(--green);background:var(--paper);border-radius:6px;padding:14px 16px}.signals strong{display:block;margin-bottom:4px}.project-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.project-card{border:1px solid var(--line);border-radius:8px;padding:16px;background:var(--paper)}.project-card h3{margin:0 0 8px;font-size:18px}.project-card p{margin:8px 0;color:var(--muted)}.callout{background:var(--amber-soft);border-color:#f1d7aa}@media(max-width:780px){.section-head{align-items:start;flex-direction:column}.note{text-align:left}.table-wrap{overflow-x:auto}table{min-width:860px}.project-grid{grid-template-columns:1fr}}
+      *{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--ink);font-family:"Segoe UI","Microsoft YaHei",Arial,sans-serif;line-height:1.65}.page{width:min(1080px,calc(100% - 32px));margin:0 auto;padding:28px 0 56px}header{padding:28px 0 22px;border-bottom:3px solid var(--ink)}.eyebrow{color:var(--green);font-size:13px;font-weight:800;letter-spacing:.08em;text-transform:uppercase}h1{margin:8px 0 10px;font-size:42px;line-height:1.15}.intro{max-width:860px;margin:0;color:var(--muted);font-size:17px}.meta,.top-nav{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}.top-nav{margin-top:14px}.pill,.nav-link{display:inline-flex;align-items:center;border:1px solid var(--line);background:var(--paper);border-radius:999px;padding:7px 11px;color:var(--muted);font-size:13px;font-weight:700}.nav-link{color:var(--green)}main{display:grid;gap:34px;margin-top:28px}section{background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:22px}.plain-section{background:transparent;border:0;border-radius:0;padding:0}.section-head{display:flex;justify-content:space-between;align-items:end;gap:16px;margin-bottom:16px}h2{margin:0;font-size:26px}.note{margin:0;max-width:44ch;color:var(--muted);text-align:right}.rank{width:34px;color:var(--green);font-weight:800}a{color:var(--green);font-weight:800;text-decoration:none}a:hover{text-decoration:underline}.tag{display:inline-flex;border-radius:999px;padding:4px 8px;background:var(--green-soft);color:var(--green);font-size:12px;font-weight:800}.repo-list{display:grid;gap:12px}.repo-item{border:1px solid var(--line);border-radius:10px;background:#fffdf9;padding:14px 16px}.repo-main{display:grid;grid-template-columns:34px minmax(0,1fr) auto;gap:12px;align-items:center}.repo-title{display:flex;flex-wrap:wrap;gap:8px;align-items:center}.repo-metrics{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end;color:var(--muted);font-size:13px;font-weight:700}.repo-metrics span{border:1px solid var(--line);border-radius:999px;padding:5px 8px;background:var(--paper)}details{margin-top:10px;border-top:1px solid var(--line);padding-top:10px}summary{cursor:pointer;color:var(--green);font-weight:800}.detail-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 18px;margin-top:8px}.detail-grid p{margin:0;color:var(--muted)}.signals{display:grid;gap:12px;margin:0;padding:0;list-style:none}.signals li{border-left:4px solid var(--green);background:var(--paper);border-radius:6px;padding:14px 16px}.signals strong{display:block;margin-bottom:4px}.project-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.project-card{border:1px solid var(--line);border-radius:8px;padding:16px;background:var(--paper)}.project-card h3{margin:0 0 8px;font-size:18px}.project-card p{margin:8px 0;color:var(--muted)}.callout{background:var(--amber-soft);border-color:#f1d7aa}@media(max-width:780px){.section-head{align-items:start;flex-direction:column}.note{text-align:left}.repo-main{grid-template-columns:28px 1fr}.repo-metrics{grid-column:2;justify-content:flex-start}.detail-grid,.project-grid{grid-template-columns:1fr}}
     </style>
   </head>
   <body>
@@ -388,8 +398,8 @@ function renderHtml(dataset, currentDate, isReport = false) {
       </header>
       <main>
         <section class="callout"><div class="section-head"><h2>今天先看什么</h2><p class="note">先看 AI 项目榜判断风向，再看应用玩法榜找产品灵感。</p></div><p>${escapeHtml(dataset.overview.themeNote)}</p></section>
-        <section><div class="section-head"><h2>24 小时星数最高的 AI 项目</h2><p class="note">偏技术、工具、Agent、工作流和基础能力，帮你看 GitHub 大神们在搭什么。</p></div><div class="table-wrap"><table>${renderTable(repos, "growth")}</table></div></section>
-        <section><div class="section-head"><h2>24 小时星数最高的实际应用玩法</h2><p class="note">偏图片、视频、PPT、设计、内容生产、办公工具和可直接上手的 AI 用法。</p></div><div class="table-wrap"><table>${renderTable(playbooks, "growth")}</table></div></section>
+        <section><div class="section-head"><h2>24 小时星数最高的 AI 项目</h2><p class="note">偏技术、工具、Agent、工作流和基础能力，帮你看 GitHub 大神们在搭什么。</p></div>${renderRepoList(repos)}</section>
+        <section><div class="section-head"><h2>24 小时星数最高的实际应用玩法</h2><p class="note">偏图片、视频、PPT、设计、内容生产、办公工具和可直接上手的 AI 用法。</p></div>${renderRepoList(playbooks)}</section>
         <section class="plain-section"><div class="section-head"><h2>今天的产品信号</h2><p class="note">产品经理视角的结论，不需要逐个仓库深挖也能看懂趋势。</p></div><ul class="signals">${dataset.signals.map((signal) => `<li><strong>${escapeHtml(signal.title)}</strong>${escapeHtml(signal.description)}</li>`).join("")}</ul></section>
         <section><div class="section-head"><h2>项目详情与产品启发</h2><p class="note">合并两张榜单并去重，先看它是做什么的，再看解决的问题、AI 用法和可借鉴点。</p></div><div class="project-grid">${projectCards}</div></section>
       </main>
