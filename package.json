@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "generate": "node scripts/generate-daily.js",
-    "render:today": "node scripts/generate-daily.js --render-existing 2026-04-27"
+    "import:live": "node scripts/import-live-daily.js",
+    "render:today": "node scripts/generate-daily.js --render-existing"
   }
 }

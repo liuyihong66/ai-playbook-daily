@@ -28,7 +28,7 @@ jobs:
       - name: Generate daily report
         run: node scripts/generate-daily.js
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ github.token }}
 
       - name: Commit generated report
         run: |
